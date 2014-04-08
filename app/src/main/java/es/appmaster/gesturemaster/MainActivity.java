@@ -7,11 +7,11 @@ import android.gesture.GestureOverlayView;
 import android.gesture.Prediction;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.Toast;
 
 import java.util.ArrayList;
+
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
 
 
 public class MainActivity extends ActionBarActivity implements GestureOverlayView.OnGesturePerformedListener {
@@ -39,11 +39,16 @@ public class MainActivity extends ActionBarActivity implements GestureOverlayVie
     @Override
     public void onGesturePerformed(GestureOverlayView overlay, Gesture gesture) {
         ArrayList<Prediction> predictions = gestureLib.recognize(gesture);
+
         for (Prediction prediction : predictions) {
             if (prediction.score > 1.0) {
-                Toast.makeText(this, prediction.name, Toast.LENGTH_SHORT).show();
+                StringBuilder toastMessage = new StringBuilder();
+                toastMessage.append(getString(R.string.gestures_detected));
+                toastMessage.append("\n");
+                toastMessage.append(prediction.name);
+
+                Crouton.makeText(this, toastMessage, Style.INFO).show();
             }
         }
-
     }
 }
